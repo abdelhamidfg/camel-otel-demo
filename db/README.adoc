@@ -1,0 +1,47 @@
+install PostgreSQL on OCP
+
+https://quay.io/repository/fedora/postgresql-14[Image postgresql-14]
+
+https://github.com/sclorg/postgresql-container[GitHub project]
+
+1 - create secret
+```
+oc create secret generic postgres-secret --from-env-file=postgres-secret && oc label secret postgres-secret "app=postgres"
+```
+
+2 - create persistent volume claim
+```
+oc apply -f postgres-pvc.yaml
+```
+
+3 - create deployment
+```
+oc apply -f postgres-deployment.yaml
+```
+
+4 - create service
+```
+oc apply -f postgres-service.yaml
+```
+
+
+create following schemas
+
+- account
+- book
+- location
+
+tip: the easiest way is using local sql manager and port forwarding the pod
+
+```
+oc port-forward [pod name] 5432:5432
+```
+
+then connect using localhost:5432
+
+
+run PostgreSQL on localhost
+
+```
+podman run --rm -p 5432:5432 -e POSTGRESQL_DATABASE=ps_db -e POSTGRESQL_USER=ps_user -e POSTGRESQL_PASSWORD=ps_password -e POSTGRESQL_ADMIN_PASSWORD=ps_admin_password quay.io/fedora/postgresql-14
+```
