@@ -1,0 +1,44 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: minio
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: minio
+  template:
+    metadata:
+      labels:
+        app: minio
+    spec:
+      volumes:
+        - name: minio-data
+          emptyDir: {}
+      containers:
+        - name: minio
+          env:
+            - name: MINIO_ROOT_USER
+              value: minio
+            - name: MINIO_ROOT_PASSWORD
+              value: minio123
+          ports:
+            - name: api
+              containerPort: 9000
+              protocol: TCP
+            - name: ui
+              containerPort: 9001
+              protocol: TCP
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: minio-data
+              mountPath: /data
+          terminationMessagePolicy: File
+          image: 'quay.io/minio/minio:latest'
+          args:
+            - server
+            - /data
+            - '--console-address'
+            - ':9001'
+  strategy:
+    type: Recreate
