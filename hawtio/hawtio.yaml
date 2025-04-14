@@ -1,0 +1,19 @@
+apiVersion: hawt.io/v1
+kind: Hawtio
+metadata:
+  name: hawtio  # ✅ required
+  namespace: ${PROJECT}
+ 
+spec:
+  auth:
+    clientCertCheckSchedule: '* */12 * * *'
+    clientCertExpirationPeriod: 24
+  replicas: 1
+  resources:
+    limits:
+      cpu: '1'
+      memory: 200Mi
+    requests:
+      cpu: 200m
+      memory: 32Mi
+  type: Cluster

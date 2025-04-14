@@ -1,0 +1,9 @@
+apiVersion: operators.coreos.com/v1
+kind: OperatorGroup
+metadata:
+  name: red-hat-hawtio-operator
+  namespace: ${PROJECT}
+spec:
+  upgradeStrategy: Default
+  targetNamespaces:
+   - ${PROJECT}
