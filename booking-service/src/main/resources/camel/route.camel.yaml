@@ -1,0 +1,50 @@
+- route:
+    id: booking-service-route
+    from:
+      id: from-3232
+      uri: platform-http
+      parameters:
+        path: /book
+      steps:
+        - log:
+            id: log-4203
+            message: "Booking Service: Received booking request ${body}"
+        - removeHeaders:
+            id: removeHeaders-2713
+            pattern: "*"
+        - to:
+            id: to-6029
+            description: flight search
+            uri: https
+            parameters:
+              bridgeEndpoint: true
+              httpMethod: POST
+              httpUri: http://flights/flight
+        - log:
+            id: log-5382
+            message: "Booking Service: Received flight info response: ${body}"
+        - setHeader:
+            id: setHeader-1278
+            expression:
+              constant:
+                expression: application/json
+            name: Content-Type
+        - setBody:
+            id: setBody-7180
+            expression:
+              simple:
+                expression: '{"bookingStatus": "confirmed", "flightId": "${header.flightId}",
+                  "flightInfo": ${body}}'
+        - to:
+            id: to-3635
+            uri: micrometer
+            parameters:
+              metricsName: bookingCount
+              metricsType: counter
+- routeConfiguration:
+
+    intercept:
+      - intercept:
+          steps:
+            - process:
+                ref: messageProcessor
