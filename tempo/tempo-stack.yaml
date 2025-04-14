@@ -1,0 +1,23 @@
+apiVersion: tempo.grafana.com/v1alpha1
+kind: TempoStack
+metadata:
+  name: otel
+spec:
+  resources:
+    total:
+      limits:
+        cpu: 4000m
+        memory: 6Gi
+  managementState: Managed
+  storage:
+    secret:
+      name: minio-secret-tempostack
+      type: s3
+  storageSize: 1Gi
+  replicationFactor: 1
+  template:
+    queryFrontend:
+      jaegerQuery:
+        enabled: true
+        ingress:
+          type: route
