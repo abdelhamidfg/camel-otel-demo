@@ -1,0 +1,18 @@
+<profiles>
+  <profile>
+    <id>redhat</id>
+    <repositories>
+      <repository>
+        <id>redhat-ga</id>
+        <name>Red Hat GA Repository</name>
+        <url>https://maven.repository.redhat.com/ga/</url>
+        <releases><enabled>true</enabled></releases>
+        <snapshots><enabled>false</enabled></snapshots>
+      </repository>
+    </repositories>
+  </profile>
+</profiles>
+ 
+<activeProfiles>
+  <activeProfile>redhat</activeProfile>
+</activeProfiles>
