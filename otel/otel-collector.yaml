@@ -1,0 +1,33 @@
+apiVersion: opentelemetry.io/v1beta1
+kind: OpenTelemetryCollector
+metadata:
+  name: otel
+  namespace: ${PROJECT}
+
+spec:
+  managementState: managed
+  mode: deployment
+  config:
+    receivers:
+      otlp:
+        protocols:
+          grpc: {}
+          http: {}
+
+    processors:
+      batch: {}
+
+    exporters:
+      debug:
+        verbosity: detailed
+      otlp:
+        endpoint: tempo-otel-distributor.${PROJECT}.svc.cluster.local:4317
+        tls:
+          insecure: true
+
+    service:
+      pipelines:
+        traces:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [debug, otlp]

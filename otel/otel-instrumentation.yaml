@@ -1,0 +1,19 @@
+apiVersion: opentelemetry.io/v1alpha1
+metadata:
+  name: aireline-instrumentation
+  namespace: ${PROJECT}
+
+kind: Instrumentation
+spec:
+  exporter:
+      endpoint: 'http://otel-collector.${PROJECT}.svc.cluster.local:4317'
+  java:
+      env:
+        - name: OTEL_INSTRUMENTATION_HTTP_CLIENT_CAPTURE_REQUEST_HEADERS
+          value: 'customerId,channelId'
+        - name: OTEL_INSTRUMENTATION_HTTP_SERVER_CAPTURE_REQUEST_HEADERS
+          value: 'customerId,channelId'
+        - name: OTEL_INSTRUMENTATION_HTTP_CLIENT_EMIT_EXPERIMENTAL_TELEMETRY
+          value: 'true'
+        - name: OTEL_INSTRUMENTATION_HTTP_SERVER_EMIT_EXPERIMENTAL_TELEMETRY
+          value: 'true'
