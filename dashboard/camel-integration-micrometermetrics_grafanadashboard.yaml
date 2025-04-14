@@ -1,0 +1,2521 @@
+kind: GrafanaDashboard
+apiVersion: grafana.integreatly.org/v1beta1
+metadata:
+    name: camel-integration-micrometermetrics
+spec:
+    datasources:
+        - inputName: DS_PROMETHEUS
+          datasourceName: Prometheus
+    resyncPeriod: 5m
+    instanceSelector:
+        matchLabels:
+            dashboards: grafana-oauth
+    json: |
+        {
+            "annotations": {
+                "list": [
+                    {
+                        "builtIn": 1,
+                        "datasource": {
+                            "type": "datasource",
+                            "uid": "grafana"
+                        },
+                        "enable": true,
+                        "hide": true,
+                        "iconColor": "rgba(0, 211, 255, 1)",
+                        "name": "Annotations & Alerts",
+                        "type": "dashboard"
+                    }
+                ]
+            },
+            "description": "Dashboard for Camel Integration metrics (Micrometer)",
+            "editable": true,
+            "fiscalYearStartMonth": 0,
+            "graphTooltip": 1,
+            "id": 4,
+            "links": [],
+            "panels": [
+                {
+                    "collapsed": false,
+                    "gridPos": {
+                        "h": 1,
+                        "w": 24,
+                        "x": 0,
+                        "y": 0
+                    },
+                    "id": 40,
+                    "panels": [],
+                    "title": "Summary",
+                    "type": "row"
+                },
+                {
+                    "datasource": "Prometheus",
+                    "description": "The uptime of the Camel Integration",
+                    "fieldConfig": {
+                        "defaults": {
+                            "color": {
+                                "fixedColor": "green",
+                                "mode": "fixed"
+                            },
+                            "mappings": [
+                                {
+                                    "options": {
+                                        "match": "null+nan",
+                                        "result": {
+                                            "color": "text",
+                                            "index": 0,
+                                            "text": "N/A"
+                                        }
+                                    },
+                                    "type": "special"
+                                }
+                            ],
+                            "thresholds": {
+                                "mode": "absolute",
+                                "steps": [
+                                    {
+                                        "color": "green",
+                                        "value": null
+                                    }
+                                ]
+                            },
+                            "unit": "s"
+                        },
+                        "overrides": []
+                    },
+                    "gridPos": {
+                        "h": 6,
+                        "w": 4,
+                        "x": 0,
+                        "y": 1
+                    },
+                    "id": 17,
+                    "maxDataPoints": 100,
+                    "options": {
+                        "colorMode": "value",
+                        "graphMode": "none",
+                        "justifyMode": "auto",
+                        "orientation": "horizontal",
+                        "reduceOptions": {
+                            "calcs": [
+                                "last"
+                            ],
+                            "fields": "",
+                            "values": false
+                        },
+                        "showPercentChange": false,
+                        "textMode": "auto",
+                        "wideLayout": true
+                    },
+                    "pluginVersion": "10.4.3",
+                    "targets": [
+                        {
+                            "datasource": "Prometheus",
+                            "disableTextWrap": false,
+                            "editorMode": "code",
+                            "expr": "process_uptime_seconds{job=\"$job\", pod=\"$pod\"}",
+                            "fullMetaSearch": false,
+                            "hide": false,
+                            "includeNullMetadata": true,
+                            "instant": false,
+                            "legendFormat": "__auto",
+                            "range": true,
+                            "refId": "B",
+                            "useBackend": false
+                        }
+                    ],
+                    "title": "Uptime",
+                    "type": "stat"
+                },
+                {
+                    "datasource": "Prometheus",
+                    "description": "Number of pod restarts in the last 5 minutes",
+                    "fieldConfig": {
+                        "defaults": {
+                            "color": {
+                                "fixedColor": "green",
+                                "mode": "thresholds"
+                            },
+                            "decimals": 0,
+                            "mappings": [
+                                {
+                                    "options": {
+                                        "match": "null+nan",
+                                        "result": {
+                                            "color": "text",
+                                            "index": 0,
+                                            "text": "N/A"
+                                        }
+                                    },
+                                    "type": "special"
+                                }
+                            ],
+                            "min": 0,
+                            "thresholds": {
+                                "mode": "absolute",
+                                "steps": [
+                                    {
+                                        "color": "green",
+                                        "value": null
+                                    },
+                                    {
+                                        "color": "#EAB839",
+                                        "value": 1
+                                    },
+                                    {
+                                        "color": "red",
+                                        "value": 2
+                                    }
+                                ]
+                            },
+                            "unit": "short"
+                        },
+                        "overrides": []
+                    },
+                    "gridPos": {
+                        "h": 6,
+                        "w": 4,
+                        "x": 4,
+                        "y": 1
+                    },
+                    "id": 37,
+                    "maxDataPoints": 100,
+                    "options": {
+                        "colorMode": "value",
+                        "graphMode": "none",
+                        "justifyMode": "auto",
+                        "orientation": "horizontal",
+                        "reduceOptions": {
+                            "calcs": [
+                                "last"
+                            ],
+                            "fields": "",
+                            "values": false
+                        },
+                        "showPercentChange": false,
+                        "textMode": "auto",
+                        "wideLayout": true
+                    },
+                    "pluginVersion": "10.4.3",
+                    "targets": [
+                        {
+                            "datasource": "Prometheus",
+                            "disableTextWrap": false,
+                            "editorMode": "code",
+                            "expr": "increase(kube_pod_container_status_restarts_total{namespace=\"$namespace\", pod=\"$pod\"}[5m])",
+                            "fullMetaSearch": false,
+                            "hide": false,
+                            "includeNullMetadata": true,
+                            "instant": false,
+                            "legendFormat": "__auto",
+                            "range": true,
+                            "refId": "B",
+                            "useBackend": false
+                        }
+                    ],
+                    "title": "Pod Restarts (last 5 minutes)",
+                    "type": "stat"
+                },
+                {
+                    "datasource": "Prometheus",
+                    "description": "Available CPUs and CPU limits set for the Camel pod",
+                    "fieldConfig": {
+                        "defaults": {
+                            "color": {
+                                "fixedColor": "green",
+                                "mode": "fixed"
+                            },
+                            "mappings": [],
+                            "max": 100,
+                            "min": 0,
+                            "thresholds": {
+                                "mode": "absolute",
+                                "steps": [
+                                    {
+                                        "color": "green",
+                                        "value": null
+                                    },
+                                    {
+                                        "color": "red",
+                                        "value": 80
+                                    }
+                                ]
+                            },
+                            "unit": "cores"
+                        },
+                        "overrides": []
+                    },
+                    "gridPos": {
+                        "h": 6,
+                        "w": 4,
+                        "x": 8,
+                        "y": 1
+                    },
+                    "id": 23,
+                    "options": {
+                        "colorMode": "none",
+                        "graphMode": "none",
+                        "justifyMode": "auto",
+                        "orientation": "auto",
+                        "reduceOptions": {
+                            "calcs": [
+                                "last"
+                            ],
+                            "fields": "",
+                            "values": false
+                        },
+                        "showPercentChange": false,
+                        "text": {},
+                        "textMode": "auto",
+                        "wideLayout": true
+                    },
+                    "pluginVersion": "10.4.3",
+                    "targets": [
+                        {
+                            "datasource": "Prometheus",
+                            "editorMode": "code",
+                            "expr": "system_cpu_count{job=\"$job\", pod=\"$pod\"}",
+                            "hide": false,
+                            "instant": false,
+                            "legendFormat": "Available CPUs:",
+                            "range": true,
+                            "refId": "B"
+                        },
+                        {
+                            "datasource": "Prometheus",
+                            "disableTextWrap": false,
+                            "editorMode": "code",
+                            "expr": "kube_pod_container_resource_limits{resource=\"cpu\", pod=\"$pod\"}",
+                            "fullMetaSearch": false,
+                            "hide": false,
+                            "includeNullMetadata": true,
+                            "instant": false,
+                            "legendFormat": "CPU Limits:",
+                            "range": true,
+                            "refId": "A",
+                            "useBackend": false
+                        }
+                    ],
+                    "title": "CPU resources",
+                    "type": "stat"
+                },
+                {
+                    "datasource": "Prometheus",
+                    "description": "CPU currently being used by Camel.",
+                    "fieldConfig": {
+                        "defaults": {
+                            "color": {
+                                "fixedColor": "text",
+                                "mode": "thresholds"
+                            },
+                            "mappings": [
+                                {
+                                    "options": {
+                                        "match": "null+nan",
+                                        "result": {
+                                            "color": "text",
+                                            "index": 0,
+                                            "text": "N/A"
+                                        }
+                                    },
+                                    "type": "special"
+                                }
+                            ],
+                            "max": 1,
+                            "min": 0,
+                            "thresholds": {
+                                "mode": "percentage",
+                                "steps": [
+                                    {
+                                        "color": "green",
+                                        "value": null
+                                    },
+                                    {
+                                        "color": "#EAB839",
+                                        "value": 70
+                                    },
+                                    {
+                                        "color": "red",
+                                        "value": 90
+                                    }
+                                ]
+                            },
+                            "unit": "percentunit"
+                        },
+                        "overrides": []
+                    },
+                    "gridPos": {
+                        "h": 6,
+                        "w": 4,
+                        "x": 12,
+                        "y": 1
+                    },
+                    "id": 30,
+                    "options": {
+                        "minVizHeight": 75,
+                        "minVizWidth": 75,
+                        "orientation": "auto",
+                        "reduceOptions": {
+                            "calcs": [
+                                "last"
+                            ],
+                            "fields": "",
+                            "values": false
+                        },
+                        "showThresholdLabels": false,
+                        "showThresholdMarkers": true,
+                        "sizing": "auto"
+                    },
+                    "pluginVersion": "10.4.3",
+                    "targets": [
+                        {
+                            "datasource": "Prometheus",
+                            "disableTextWrap": false,
+                            "editorMode": "builder",
+                            "exemplar": true,
+                            "expr": "process_cpu_usage{job=\"$job\", pod=\"$pod\"}",
+                            "format": "time_series",
+                            "fullMetaSearch": false,
+                            "includeNullMetadata": true,
+                            "intervalFactor": 1,
+                            "legendFormat": "__auto",
+                            "range": true,
+                            "refId": "A",
+                            "useBackend": false
+                        }
+                    ],
+                    "title": "CPU Usage",
+                    "type": "gauge"
+                },
+                {
+                    "datasource": "Prometheus",
+                    "description": "Memory limits set for the pod",
+                    "fieldConfig": {
+                        "defaults": {
+                            "color": {
+                                "fixedColor": "green",
+                                "mode": "fixed"
+                            },
+                            "mappings": [],
+                            "max": 100,
+                            "min": 0,
+                            "thresholds": {
+                                "mode": "absolute",
+                                "steps": [
+                                    {
+                                        "color": "green",
+                                        "value": null
+                                    }
+                                ]
+                            },
+                            "unit": "bytes"
+                        },
+                        "overrides": []
+                    },
+                    "gridPos": {
+                        "h": 6,
+                        "w": 4,
+                        "x": 16,
+                        "y": 1
+                    },
+                    "id": 25,
+                    "options": {
+                        "colorMode": "none",
+                        "graphMode": "none",
+                        "justifyMode": "auto",
+                        "orientation": "auto",
+                        "reduceOptions": {
+                            "calcs": [
+                                "last"
+                            ],
+                            "fields": "",
+                            "values": false
+                        },
+                        "showPercentChange": false,
+                        "textMode": "auto",
+                        "wideLayout": true
+                    },
+                    "pluginVersion": "10.4.3",
+                    "targets": [
+                        {
+                            "datasource": "Prometheus",
+                            "disableTextWrap": false,
+                            "editorMode": "code",
+                            "expr": "kube_pod_container_resource_limits{resource=\"memory\", pod=\"$pod\"}",
+                            "fullMetaSearch": false,
+                            "hide": false,
+                            "includeNullMetadata": true,
+                            "instant": false,
+                            "legendFormat": "__auto",
+                            "range": true,
+                            "refId": "A",
+                            "useBackend": false
+                        }
+                    ],
+                    "title": "Memory limits",
+                    "type": "stat"
+                },
+                {
+                    "datasource": "Prometheus",
+                    "description": "Memory HEAP currently being used by Camel.",
+                    "fieldConfig": {
+                        "defaults": {
+                            "color": {
+                                "mode": "thresholds"
+                            },
+                            "mappings": [
+                                {
+                                    "options": {
+                                        "match": "null+nan",
+                                        "result": {
+                                            "color": "text",
+                                            "index": 0,
+                                            "text": "N/A"
+                                        }
+                                    },
+                                    "type": "special"
+                                }
+                            ],
+                            "max": 100,
+                            "min": 0,
+                            "thresholds": {
+                                "mode": "percentage",
+                                "steps": [
+                                    {
+                                        "color": "green",
+                                        "value": null
+                                    },
+                                    {
+                                        "color": "#EAB839",
+                                        "value": 70
+                                    },
+                                    {
+                                        "color": "red",
+                                        "value": 90
+                                    }
+                                ]
+                            },
+                            "unit": "percent"
+                        },
+                        "overrides": []
+                    },
+                    "gridPos": {
+                        "h": 6,
+                        "w": 4,
+                        "x": 20,
+                        "y": 1
+                    },
+                    "id": 8,
+                    "options": {
+                        "minVizHeight": 75,
+                        "minVizWidth": 75,
+                        "orientation": "auto",
+                        "reduceOptions": {
+                            "calcs": [
+                                "last"
+                            ],
+                            "fields": "",
+                            "values": false
+                        },
+                        "showThresholdLabels": false,
+                        "showThresholdMarkers": true,
+                        "sizing": "auto"
+                    },
+                    "pluginVersion": "10.4.3",
+                    "targets": [
+                        {
+                            "datasource": "Prometheus",
+                            "disableTextWrap": false,
+                            "editorMode": "code",
+                            "exemplar": true,
+                            "expr": "(sum(jvm_memory_used_bytes{area=\"heap\", job=\"$job\", pod=\"$pod\"}) * 100) / sum(jvm_memory_max_bytes{area=\"heap\", job=\"$job\", pod=\"$pod\"})",
+                            "format": "time_series",
+                            "fullMetaSearch": false,
+                            "includeNullMetadata": true,
+                            "intervalFactor": 1,
+                            "legendFormat": "__auto",
+                            "range": true,
+                            "refId": "A",
+                            "useBackend": false
+                        }
+                    ],
+                    "title": "JVM HEAP Usage",
+                    "type": "gauge"
+                },
+                {
+                    "collapsed": false,
+                    "gridPos": {
+                        "h": 1,
+                        "w": 24,
+                        "x": 0,
+                        "y": 7
+                    },
+                    "id": 32,
+                    "panels": [],
+                    "title": "Resource Metrics",
+                    "type": "row"
+                },
+                {
+                    "datasource": "Prometheus",
+                    "description": "Number of pod restarts in the last 5 minutes",
+                    "fieldConfig": {
+                        "defaults": {
+                            "color": {
+                                "mode": "thresholds"
+                            },
+                            "custom": {
+                                "axisBorderShow": false,
+                                "axisCenteredZero": false,
+                                "axisColorMode": "text",
+                                "axisLabel": "",
+                                "axisPlacement": "auto",
+                                "barAlignment": 0,
+                                "drawStyle": "line",
+                                "fillOpacity": 10,
+                                "gradientMode": "none",
+                                "hideFrom": {
+                                    "legend": false,
+                                    "tooltip": false,
+                                    "viz": false
+                                },
+                                "insertNulls": false,
+                                "lineInterpolation": "linear",
+                                "lineWidth": 1,
+                                "pointSize": 5,
+                                "scaleDistribution": {
+                                    "type": "linear"
+                                },
+                                "showPoints": "auto",
+                                "spanNulls": false,
+                                "stacking": {
+                                    "group": "A",
+                                    "mode": "none"
+                                },
+                                "thresholdsStyle": {
+                                    "mode": "area"
+                                }
+                            },
+                            "decimals": 0,
+                            "mappings": [],
+                            "min": 0,
+                            "thresholds": {
+                                "mode": "absolute",
+                                "steps": [
+                                    {
+                                        "color": "green",
+                                        "value": null
+                                    },
+                                    {
+                                        "color": "#EAB839",
+                                        "value": 1
+                                    },
+                                    {
+                                        "color": "red",
+                                        "value": 2
+                                    }
+                                ]
+                            },
+                            "unit": "short"
+                        },
+                        "overrides": []
+                    },
+                    "gridPos": {
+                        "h": 6,
+                        "w": 8,
+                        "x": 0,
+                        "y": 8
+                    },
+                    "id": 38,
+                    "options": {
+                        "legend": {
+                            "calcs": [],
+                            "displayMode": "list",
+                            "placement": "bottom",
+                            "showLegend": false
+                        },
+                        "tooltip": {
+                            "mode": "single",
+                            "sort": "none"
+                        }
+                    },
+                    "pluginVersion": "10.4.3",
+                    "targets": [
+                        {
+                            "datasource": "Prometheus",
+                            "disableTextWrap": false,
+                            "editorMode": "code",
+                            "expr": "increase(kube_pod_container_status_restarts_total{namespace=\"$namespace\", pod=\"$pod\"}[5m])",
+                            "fullMetaSearch": false,
+                            "includeNullMetadata": true,
+                            "instant": false,
+                            "legendFormat": "Pod restarts / 5min",
+                            "range": true,
+                            "refId": "A",
+                            "useBackend": false
+                        }
+                    ],
+                    "title": "Pod restarts (last 5 minutes)",
+                    "type": "timeseries"
+                },
+                {
+                    "datasource": "Prometheus",
+                    "description": "Displays the \"recent cpu usage\" for the Camel integration.",
+                    "fieldConfig": {
+                        "defaults": {
+                            "color": {
+                                "mode": "thresholds"
+                            },
+                            "custom": {
+                                "axisBorderShow": false,
+                                "axisCenteredZero": false,
+                                "axisColorMode": "text",
+                                "axisLabel": "",
+                                "axisPlacement": "auto",
+                                "barAlignment": 0,
+                                "drawStyle": "line",
+                                "fillOpacity": 10,
+                                "gradientMode": "none",
+                                "hideFrom": {
+                                    "legend": false,
+                                    "tooltip": false,
+                                    "viz": false
+                                },
+                                "insertNulls": false,
+                                "lineInterpolation": "linear",
+                                "lineWidth": 1,
+                                "pointSize": 5,
+                                "scaleDistribution": {
+                                    "type": "linear"
+                                },
+                                "showPoints": "auto",
+                                "spanNulls": false,
+                                "stacking": {
+                                    "group": "A",
+                                    "mode": "none"
+                                },
+                                "thresholdsStyle": {
+                                    "mode": "area"
+                                }
+                            },
+                            "mappings": [],
+                            "max": 1,
+                            "min": 0,
+                            "thresholds": {
+                                "mode": "percentage",
+                                "steps": [
+                                    {
+                                        "color": "green",
+                                        "value": null
+                                    },
+                                    {
+                                        "color": "#EAB839",
+                                        "value": 70
+                                    },
+                                    {
+                                        "color": "red",
+                                        "value": 90
+                                    }
+                                ]
+                            },
+                            "unit": "percentunit"
+                        },
+                        "overrides": []
+                    },
+                    "gridPos": {
+                        "h": 6,
+                        "w": 16,
+                        "x": 8,
+                        "y": 8
+                    },
+                    "id": 22,
+                    "options": {
+                        "legend": {
+                            "calcs": [],
+                            "displayMode": "list",
+                            "placement": "bottom",
+                            "showLegend": false
+                        },
+                        "tooltip": {
+                            "mode": "single",
+                            "sort": "none"
+                        }
+                    },
+                    "pluginVersion": "10.4.3",
+                    "targets": [
+                        {
+                            "datasource": "Prometheus",
+                            "disableTextWrap": false,
+                            "editorMode": "code",
+                            "expr": "process_cpu_usage{job=\"$job\", pod=\"$pod\"}",
+                            "fullMetaSearch": false,
+                            "includeNullMetadata": true,
+                            "instant": false,
+                            "legendFormat": "CPU Usage %",
+                            "range": true,
+                            "refId": "A",
+                            "useBackend": false
+                        }
+                    ],
+                    "title": "CPU Usage",
+                    "type": "timeseries"
+                },
+                {
+                    "datasource": "Prometheus",
+                    "description": "Pod memory usage by Camel",
+                    "fieldConfig": {
+                        "defaults": {
+                            "color": {
+                                "mode": "palette-classic"
+                            },
+                            "custom": {
+                                "axisBorderShow": false,
+                                "axisCenteredZero": false,
+                                "axisColorMode": "text",
+                                "axisLabel": "",
+                                "axisPlacement": "auto",
+                                "barAlignment": 0,
+                                "drawStyle": "line",
+                                "fillOpacity": 12,
+                                "gradientMode": "none",
+                                "hideFrom": {
+                                    "legend": false,
+                                    "tooltip": false,
+                                    "viz": false
+                                },
+                                "insertNulls": false,
+                                "lineInterpolation": "linear",
+                                "lineWidth": 1,
+                                "pointSize": 5,
+                                "scaleDistribution": {
+                                    "type": "linear"
+                                },
+                                "showPoints": "auto",
+                                "spanNulls": false,
+                                "stacking": {
+                                    "group": "A",
+                                    "mode": "none"
+                                },
+                                "thresholdsStyle": {
+                                    "mode": "off"
+                                }
+                            },
+                            "mappings": [],
+                            "min": 0,
+                            "thresholds": {
+                                "mode": "absolute",
+                                "steps": [
+                                    {
+                                        "color": "green",
+                                        "value": null
+                                    },
+                                    {
+                                        "color": "red",
+                                        "value": 80
+                                    }
+                                ]
+                            },
+                            "unit": "bytes"
+                        },
+                        "overrides": []
+                    },
+                    "gridPos": {
+                        "h": 6,
+                        "w": 8,
+                        "x": 0,
+                        "y": 14
+                    },
+                    "id": 26,
+                    "options": {
+                        "legend": {
+                            "calcs": [],
+                            "displayMode": "list",
+                            "placement": "bottom",
+                            "showLegend": true
+                        },
+                        "tooltip": {
+                            "mode": "multi",
+                            "sort": "none"
+                        }
+                    },
+                    "targets": [
+                        {
+                            "datasource": "Prometheus",
+                            "editorMode": "code",
+                            "expr": "kube_pod_container_resource_requests{resource=\"memory\", pod=\"$pod\"}",
+                            "hide": false,
+                            "instant": false,
+                            "legendFormat": "Memory Requests",
+                            "range": true,
+                            "refId": "B"
+                        },
+                        {
+                            "datasource": "Prometheus",
+                            "disableTextWrap": false,
+                            "editorMode": "code",
+                            "expr": "max(container_memory_rss{pod=\"$pod\"})",
+                            "fullMetaSearch": false,
+                            "includeNullMetadata": true,
+                            "instant": false,
+                            "legendFormat": "Pod RSS",
+                            "range": true,
+                            "refId": "A",
+                            "useBackend": false
+                        },
+                        {
+                            "datasource": "Prometheus",
+                            "editorMode": "code",
+                            "expr": "kube_pod_container_resource_limits{resource=\"memory\", pod=\"$pod\"}",
+                            "hide": false,
+                            "instant": false,
+                            "legendFormat": "Memory Limits",
+                            "range": true,
+                            "refId": "C"
+                        },
+                        {
+                            "datasource": "Prometheus",
+                            "editorMode": "code",
+                            "expr": "sum(jvm_memory_committed_bytes{area=\"heap\", job=\"$job\", pod=\"$pod\"})",
+                            "hide": false,
+                            "instant": false,
+                            "legendFormat": "JVM HEAP Committed",
+                            "range": true,
+                            "refId": "D"
+                        },
+                        {
+                            "datasource": "Prometheus",
+                            "editorMode": "code",
+                            "expr": "sum(jvm_memory_max_bytes{area=\"heap\", job=\"$job\", pod=\"$pod\"})",
+                            "hide": false,
+                            "instant": false,
+                            "legendFormat": "JVM HEAP Max",
+                            "range": true,
+                            "refId": "E"
+                        }
+                    ],
+                    "title": "Pod Memory Usage",
+                    "type": "timeseries"
+                },
+                {
+                    "datasource": "Prometheus",
+                    "description": "JVM Memory used by Camel",
+                    "fieldConfig": {
+                        "defaults": {
+                            "color": {
+                                "mode": "palette-classic"
+                            },
+                            "custom": {
+                                "axisBorderShow": false,
+                                "axisCenteredZero": false,
+                                "axisColorMode": "text",
+                                "axisLabel": "",
+                                "axisPlacement": "auto",
+                                "barAlignment": 0,
+                                "drawStyle": "line",
+                                "fillOpacity": 10,
+                                "gradientMode": "none",
+                                "hideFrom": {
+                                    "legend": false,
+                                    "tooltip": false,
+                                    "viz": false
+                                },
+                                "insertNulls": false,
+                                "lineInterpolation": "linear",
+                                "lineWidth": 1,
+                                "pointSize": 5,
+                                "scaleDistribution": {
+                                    "type": "linear"
+                                },
+                                "showPoints": "never",
+                                "spanNulls": false,
+                                "stacking": {
+                                    "group": "A",
+                                    "mode": "none"
+                                },
+                                "thresholdsStyle": {
+                                    "mode": "off"
+                                }
+                            },
+                            "mappings": [],
+                            "min": 0,
+                            "thresholds": {
+                                "mode": "absolute",
+                                "steps": [
+                                    {
+                                        "color": "green",
+                                        "value": null
+                                    },
+                                    {
+                                        "color": "red",
+                                        "value": 80
+                                    }
+                                ]
+                            },
+                            "unit": "bytes"
+                        },
+                        "overrides": []
+                    },
+                    "gridPos": {
+                        "h": 6,
+                        "w": 8,
+                        "x": 8,
+                        "y": 14
+                    },
+                    "id": 24,
+                    "options": {
+                        "legend": {
+                            "calcs": [],
+                            "displayMode": "list",
+                            "placement": "bottom",
+                            "showLegend": true
+                        },
+                        "tooltip": {
+                            "mode": "multi",
+                            "sort": "none"
+                        }
+                    },
+                    "pluginVersion": "10.4.3",
+                    "targets": [
+                        {
+                            "datasource": "Prometheus",
+                            "editorMode": "code",
+                            "expr": "sum(jvm_memory_used_bytes{area=\"heap\", job=\"$job\", pod=\"$pod\"})",
+                            "format": "time_series",
+                            "interval": "",
+                            "intervalFactor": 1,
+                            "legendFormat": "JVM Heap",
+                            "range": true,
+                            "refId": "A"
+                        },
+                        {
+                            "datasource": "Prometheus",
+                            "editorMode": "code",
+                            "expr": "sum(jvm_memory_used_bytes{area=\"nonheap\",job=\"$job\", pod=\"$pod\"})",
+                            "format": "time_series",
+                            "intervalFactor": 1,
+                            "legendFormat": "JVM Non Heap",
+                            "range": true,
+                            "refId": "B"
+                        }
+                    ],
+                    "title": "JVM Memory Usage",
+                    "type": "timeseries"
+                },
+                {
+                    "datasource": "Prometheus",
+                    "description": "JVM Memory HEAP used by Camel",
+                    "fieldConfig": {
+                        "defaults": {
+                            "color": {
+                                "mode": "palette-classic"
+                            },
+                            "custom": {
+                                "axisBorderShow": false,
+                                "axisCenteredZero": false,
+                                "axisColorMode": "text",
+                                "axisLabel": "",
+                                "axisPlacement": "auto",
+                                "barAlignment": 0,
+                                "drawStyle": "line",
+                                "fillOpacity": 10,
+                                "gradientMode": "none",
+                                "hideFrom": {
+                                    "legend": false,
+                                    "tooltip": false,
+                                    "viz": false
+                                },
+                                "insertNulls": false,
+                                "lineInterpolation": "linear",
+                                "lineWidth": 1,
+                                "pointSize": 5,
+                                "scaleDistribution": {
+                                    "type": "linear"
+                                },
+                                "showPoints": "never",
+                                "spanNulls": false,
+                                "stacking": {
+                                    "group": "A",
+                                    "mode": "none"
+                                },
+                                "thresholdsStyle": {
+                                    "mode": "off"
+                                }
+                            },
+                            "mappings": [],
+                            "min": 0,
+                            "thresholds": {
+                                "mode": "absolute",
+                                "steps": [
+                                    {
+                                        "color": "green",
+                                        "value": null
+                                    },
+                                    {
+                                        "color": "red",
+                                        "value": 80
+                                    }
+                                ]
+                            },
+                            "unit": "bytes"
+                        },
+                        "overrides": []
+                    },
+                    "gridPos": {
+                        "h": 6,
+                        "w": 8,
+                        "x": 16,
+                        "y": 14
+                    },
+                    "id": 11,
+                    "options": {
+                        "legend": {
+                            "calcs": [],
+                            "displayMode": "list",
+                            "placement": "bottom",
+                            "showLegend": true
+                        },
+                        "tooltip": {
+                            "mode": "multi",
+                            "sort": "none"
+                        }
+                    },
+                    "pluginVersion": "10.4.3",
+                    "targets": [
+                        {
+                            "datasource": "Prometheus",
+                            "editorMode": "code",
+                            "expr": "sum(jvm_memory_committed_bytes{area=\"heap\", job=\"$job\", pod=\"$pod\"})",
+                            "format": "time_series",
+                            "interval": "",
+                            "intervalFactor": 1,
+                            "legendFormat": "committed",
+                            "range": true,
+                            "refId": "A"
+                        },
+                        {
+                            "datasource": "Prometheus",
+                            "editorMode": "code",
+                            "expr": "sum(jvm_memory_used_bytes{area=\"heap\", job=\"$job\", pod=\"$pod\"})",
+                            "format": "time_series",
+                            "intervalFactor": 1,
+                            "legendFormat": "used",
+                            "range": true,
+                            "refId": "B"
+                        },
+                        {
+                            "datasource": "Prometheus",
+                            "editorMode": "code",
+                            "expr": "sum(jvm_memory_max_bytes{area=\"heap\", job=\"$job\", pod=\"$pod\"})",
+                            "format": "time_series",
+                            "intervalFactor": 1,
+                            "legendFormat": "max",
+                            "range": true,
+                            "refId": "C"
+                        }
+                    ],
+                    "title": "JVM Memory HEAP Usage",
+                    "type": "timeseries"
+                },
+                {
+                    "datasource": "Prometheus",
+                    "description": "Current live threads",
+                    "fieldConfig": {
+                        "defaults": {
+                            "color": {
+                                "mode": "palette-classic"
+                            },
+                            "custom": {
+                                "axisBorderShow": false,
+                                "axisCenteredZero": false,
+                                "axisColorMode": "text",
+                                "axisLabel": "",
+                                "axisPlacement": "auto",
+                                "barAlignment": 0,
+                                "drawStyle": "line",
+                                "fillOpacity": 10,
+                                "gradientMode": "none",
+                                "hideFrom": {
+                                    "legend": false,
+                                    "tooltip": false,
+                                    "viz": false
+                                },
+                                "insertNulls": false,
+                                "lineInterpolation": "linear",
+                                "lineWidth": 1,
+                                "pointSize": 5,
+                                "scaleDistribution": {
+                                    "type": "linear"
+                                },
+                                "showPoints": "never",
+                                "spanNulls": false,
+                                "stacking": {
+                                    "group": "A",
+                                    "mode": "none"
+                                },
+                                "thresholdsStyle": {
+                                    "mode": "off"
+                                }
+                            },
+                            "mappings": [],
+                            "min": 0,
+                            "thresholds": {
+                                "mode": "absolute",
+                                "steps": [
+                                    {
+                                        "color": "green",
+                                        "value": null
+                                    },
+                                    {
+                                        "color": "red",
+                                        "value": 80
+                                    }
+                                ]
+                            },
+                            "unit": "short"
+                        },
+                        "overrides": []
+                    },
+                    "gridPos": {
+                        "h": 6,
+                        "w": 8,
+                        "x": 0,
+                        "y": 20
+                    },
+                    "id": 19,
+                    "options": {
+                        "legend": {
+                            "calcs": [],
+                            "displayMode": "list",
+                            "placement": "bottom",
+                            "showLegend": true
+                        },
+                        "tooltip": {
+                            "mode": "multi",
+                            "sort": "none"
+                        }
+                    },
+                    "pluginVersion": "10.4.3",
+                    "targets": [
+                        {
+                            "datasource": "Prometheus",
+                            "disableTextWrap": false,
+                            "editorMode": "code",
+                            "expr": "jvm_threads_live_threads{job=\"$job\", pod=\"$pod\"}",
+                            "format": "time_series",
+                            "fullMetaSearch": false,
+                            "includeNullMetadata": true,
+                            "interval": "",
+                            "intervalFactor": 1,
+                            "legendFormat": "current live threads",
+                            "range": true,
+                            "refId": "A",
+                            "useBackend": false
+                        },
+                        {
+                            "datasource": "Prometheus",
+                            "disableTextWrap": false,
+                            "editorMode": "code",
+                            "expr": "jvm_threads_daemon_threads{job=\"$job\", pod=\"$pod\"}",
+                            "format": "time_series",
+                            "fullMetaSearch": false,
+                            "includeNullMetadata": true,
+                            "intervalFactor": 1,
+                            "legendFormat": "daemon live threads",
+                            "range": true,
+                            "refId": "B",
+                            "useBackend": false
+                        },
+                        {
+                            "datasource": "Prometheus",
+                            "disableTextWrap": false,
+                            "editorMode": "code",
+                            "expr": "jvm_threads_peak_threads{job=\"$job\", pod=\"$pod\"}",
+                            "format": "time_series",
+                            "fullMetaSearch": false,
+                            "includeNullMetadata": true,
+                            "intervalFactor": 1,
+                            "legendFormat": "peak live threads",
+                            "range": true,
+                            "refId": "C",
+                            "useBackend": false
+                        }
+                    ],
+                    "title": "Threads",
+                    "type": "timeseries"
+                },
+                {
+                    "datasource": "Prometheus",
+                    "description": "Calculates the number of garbage collection (GC) pause events that have occurred over a period of 5 minutes (increase/how many more)",
+                    "fieldConfig": {
+                        "defaults": {
+                            "color": {
+                                "mode": "palette-classic"
+                            },
+                            "custom": {
+                                "axisBorderShow": false,
+                                "axisCenteredZero": false,
+                                "axisColorMode": "text",
+                                "axisLabel": "",
+                                "axisPlacement": "auto",
+                                "barAlignment": 0,
+                                "drawStyle": "line",
+                                "fillOpacity": 10,
+                                "gradientMode": "none",
+                                "hideFrom": {
+                                    "legend": false,
+                                    "tooltip": false,
+                                    "viz": false
+                                },
+                                "insertNulls": false,
+                                "lineInterpolation": "linear",
+                                "lineWidth": 1,
+                                "pointSize": 5,
+                                "scaleDistribution": {
+                                    "type": "linear"
+                                },
+                                "showPoints": "never",
+                                "spanNulls": false,
+                                "stacking": {
+                                    "group": "A",
+                                    "mode": "none"
+                                },
+                                "thresholdsStyle": {
+                                    "mode": "off"
+                                }
+                            },
+                            "decimals": 0,
+                            "mappings": [],
+                            "min": 0,
+                            "thresholds": {
+                                "mode": "absolute",
+                                "steps": [
+                                    {
+                                        "color": "green",
+                                        "value": null
+                                    },
+                                    {
+                                        "color": "red",
+                                        "value": 80
+                                    }
+                                ]
+                            },
+                            "unit": "short"
+                        },
+                        "overrides": []
+                    },
+                    "gridPos": {
+                        "h": 6,
+                        "w": 16,
+                        "x": 8,
+                        "y": 20
+                    },
+                    "id": 27,
+                    "options": {
+                        "legend": {
+                            "calcs": [],
+                            "displayMode": "list",
+                            "placement": "bottom",
+                            "showLegend": true
+                        },
+                        "tooltip": {
+                            "mode": "multi",
+                            "sort": "none"
+                        }
+                    },
+                    "pluginVersion": "10.4.3",
+                    "targets": [
+                        {
+                            "datasource": "Prometheus",
+                            "editorMode": "code",
+                            "expr": "sum(increase(jvm_gc_pause_seconds_count{job=\"$job\", pod=\"$pod\"}[5m])) by (gc)",
+                            "format": "time_series",
+                            "interval": "",
+                            "intervalFactor": 1,
+                            "legendFormat": "GC {{gc}} events / 5min",
+                            "range": true,
+                            "refId": "A"
+                        }
+                    ],
+                    "title": "GC Events by algorithm [last 5 minutes]",
+                    "type": "timeseries"
+                },
+                {
+                    "collapsed": false,
+                    "gridPos": {
+                        "h": 1,
+                        "w": 24,
+                        "x": 0,
+                        "y": 26
+                    },
+                    "id": 31,
+                    "panels": [],
+                    "title": "Camel Global Metrics",
+                    "type": "row"
+                },
+                {
+                    "datasource": "${DS_PROMETHEUS}",
+                    "description": "Monitors the successful completion rate of exchanges in the Camel integration by providing the percentage of successfully completed exchanges out of the total exchanges.",
+                    "fieldConfig": {
+                        "defaults": {
+                            "color": {
+                                "fixedColor": "green",
+                                "mode": "fixed"
+                            },
+                            "fieldMinMax": false,
+                            "mappings": [
+                                {
+                                    "options": {
+                                        "match": "null+nan",
+                                        "result": {
+                                            "color": "text",
+                                            "index": 0,
+                                            "text": "N/A"
+                                        }
+                                    },
+                                    "type": "special"
+                                }
+                            ],
+                            "min": 0,
+                            "thresholds": {
+                                "mode": "percentage",
+                                "steps": [
+                                    {
+                                        "color": "green",
+                                        "value": null
+                                    },
+                                    {
+                                        "color": "#EAB839",
+                                        "value": 50
+                                    },
+                                    {
+                                        "color": "red",
+                                        "value": 70
+                                    }
+                                ]
+                            },
+                            "unit": "percent"
+                        },
+                        "overrides": []
+                    },
+                    "gridPos": {
+                        "h": 6,
+                        "w": 4,
+                        "x": 0,
+                        "y": 27
+                    },
+                    "id": 20,
+                    "options": {
+                        "colorMode": "value",
+                        "graphMode": "none",
+                        "justifyMode": "auto",
+                        "orientation": "auto",
+                        "reduceOptions": {
+                            "calcs": [
+                                "last"
+                            ],
+                            "fields": "",
+                            "values": false
+                        },
+                        "showPercentChange": false,
+                        "textMode": "auto",
+                        "wideLayout": true
+                    },
+                    "pluginVersion": "10.4.3",
+                    "targets": [
+                        {
+                            "datasource": "Prometheus",
+                            "disableTextWrap": false,
+                            "editorMode": "code",
+                            "expr": "(sum(camel_exchanges_succeeded_total{job=\"$job\", pod=\"$pod\"}) * 100) / sum(camel_exchanges_total{job=\"$job\", pod=\"$pod\"})",
+                            "format": "time_series",
+                            "fullMetaSearch": false,
+                            "includeNullMetadata": true,
+                            "intervalFactor": 1,
+                            "legendFormat": "{{routeId}}",
+                            "range": true,
+                            "refId": "A",
+                            "useBackend": false
+                        }
+                    ],
+                    "title": "Exchanges completion rate",
+                    "type": "stat"
+                },
+                {
+                    "datasource": "Prometheus",
+                    "description": "Monitors the failure rate of exchanges in a Camel integration by providing the percentage of failed exchanges out of the total exchanges.",
+                    "fieldConfig": {
+                        "defaults": {
+                            "color": {
+                                "mode": "thresholds"
+                            },
+                            "mappings": [
+                                {
+                                    "options": {
+                                        "match": "null+nan",
+                                        "result": {
+                                            "color": "text",
+                                            "index": 0,
+                                            "text": "N/A"
+                                        }
+                                    },
+                                    "type": "special"
+                                }
+                            ],
+                            "max": 100,
+                            "min": 0,
+                            "thresholds": {
+                                "mode": "percentage",
+                                "steps": [
+                                    {
+                                        "color": "green",
+                                        "value": null
+                                    },
+                                    {
+                                        "color": "#EAB839",
+                                        "value": 0.1
+                                    },
+                                    {
+                                        "color": "red",
+                                        "value": 50
+                                    }
+                                ]
+                            },
+                            "unit": "percent"
+                        },
+                        "overrides": []
+                    },
+                    "gridPos": {
+                        "h": 6,
+                        "w": 4,
+                        "x": 4,
+                        "y": 27
+                    },
+                    "id": 29,
+                    "options": {
+                        "colorMode": "value",
+                        "graphMode": "none",
+                        "justifyMode": "auto",
+                        "orientation": "auto",
+                        "reduceOptions": {
+                            "calcs": [
+                                "last"
+                            ],
+                            "fields": "",
+                            "values": false
+                        },
+                        "showPercentChange": false,
+                        "textMode": "auto",
+                        "wideLayout": true
+                    },
+                    "pluginVersion": "10.4.3",
+                    "targets": [
+                        {
+                            "datasource": "Prometheus",
+                            "disableTextWrap": false,
+                            "editorMode": "code",
+                            "expr": "(sum(camel_exchanges_failed_total{job=\"$job\", pod=\"$pod\"}) * 100) / sum(camel_exchanges_total{job=\"$job\", pod=\"$pod\"})",
+                            "format": "time_series",
+                            "fullMetaSearch": false,
+                            "includeNullMetadata": true,
+                            "intervalFactor": 1,
+                            "range": true,
+                            "refId": "A",
+                            "useBackend": false
+                        }
+                    ],
+                    "title": "Exchanges failure rate",
+                    "type": "stat"
+                },
+                {
+                    "datasource": "Prometheus",
+                    "description": "Number of exchanges that are currently being processed and have not yet completed within the Camel integration",
+                    "fieldConfig": {
+                        "defaults": {
+                            "color": {
+                                "fixedColor": "green",
+                                "mode": "thresholds"
+                            },
+                            "decimals": 0,
+                            "fieldMinMax": false,
+                            "mappings": [
+                                {
+                                    "options": {
+                                        "match": "null+nan",
+                                        "result": {
+                                            "color": "text",
+                                            "index": 0,
+                                            "text": "N/A"
+                                        }
+                                    },
+                                    "type": "special"
+                                }
+                            ],
+                            "min": 0,
+                            "thresholds": {
+                                "mode": "absolute",
+                                "steps": [
+                                    {
+                                        "color": "green",
+                                        "value": null
+                                    },
+                                    {
+                                        "color": "#EAB839",
+                                        "value": 20
+                                    },
+                                    {
+                                        "color": "red",
+                                        "value": 50
+                                    }
+                                ]
+                            },
+                            "unit": "short"
+                        },
+                        "overrides": []
+                    },
+                    "gridPos": {
+                        "h": 6,
+                        "w": 4,
+                        "x": 8,
+                        "y": 27
+                    },
+                    "id": 33,
+                    "options": {
+                        "colorMode": "value",
+                        "graphMode": "none",
+                        "justifyMode": "auto",
+                        "orientation": "auto",
+                        "reduceOptions": {
+                            "calcs": [
+                                "last"
+                            ],
+                            "fields": "",
+                            "values": false
+                        },
+                        "showPercentChange": false,
+                        "textMode": "auto",
+                        "wideLayout": true
+                    },
+                    "pluginVersion": "10.4.3",
+                    "targets": [
+                        {
+                            "datasource": "Prometheus",
+                            "disableTextWrap": false,
+                            "editorMode": "code",
+                            "expr": "sum(camel_exchanges_inflight{job=\"$job\", pod=\"$pod\"})",
+                            "format": "time_series",
+                            "fullMetaSearch": false,
+                            "includeNullMetadata": true,
+                            "intervalFactor": 1,
+                            "legendFormat": "__auto",
+                            "range": true,
+                            "refId": "A",
+                            "useBackend": false
+                        }
+                    ],
+                    "title": "Exchanges inflight",
+                    "type": "stat"
+                },
+                {
+                    "datasource": "${DS_PROMETHEUS}",
+                    "description": "Average amount of time taken to process messages within the Camel integration by route",
+                    "fieldConfig": {
+                        "defaults": {
+                            "color": {
+                                "mode": "thresholds"
+                            },
+                            "fieldMinMax": false,
+                            "mappings": [
+                                {
+                                    "options": {
+                                        "match": "null+nan",
+                                        "result": {
+                                            "color": "text",
+                                            "index": 0,
+                                            "text": "N/A"
+                                        }
+                                    },
+                                    "type": "special"
+                                }
+                            ],
+                            "min": 0,
+                            "thresholds": {
+                                "mode": "absolute",
+                                "steps": [
+                                    {
+                                        "color": "green",
+                                        "value": null
+                                    },
+                                    {
+                                        "color": "#EAB839",
+                                        "value": 0.5
+                                    },
+                                    {
+                                        "color": "red",
+                                        "value": 1
+                                    }
+                                ]
+                            },
+                            "unit": "s"
+                        },
+                        "overrides": []
+                    },
+                    "gridPos": {
+                        "h": 6,
+                        "w": 5,
+                        "x": 12,
+                        "y": 27
+                    },
+                    "id": 84,
+                    "options": {
+                        "colorMode": "value",
+                        "graphMode": "none",
+                        "justifyMode": "auto",
+                        "orientation": "horizontal",
+                        "reduceOptions": {
+                            "calcs": [
+                                "last"
+                            ],
+                            "fields": "",
+                            "values": false
+                        },
+                        "showPercentChange": false,
+                        "textMode": "value_and_name",
+                        "wideLayout": true
+                    },
+                    "pluginVersion": "10.4.3",
+                    "targets": [
+                        {
+                            "datasource": "Prometheus",
+                            "disableTextWrap": false,
+                            "editorMode": "code",
+                            "expr": "sum(camel_message_history_seconds_sum{job=\"$job\", pod=\"$pod\"}) by (routeId) / sum(camel_message_history_seconds_count{job=\"$job\", pod=\"$pod\"}) by (routeId)",
+                            "format": "time_series",
+                            "fullMetaSearch": false,
+                            "includeNullMetadata": true,
+                            "intervalFactor": 1,
+                            "legendFormat": "{{routeId}}:",
+                            "range": true,
+                            "refId": "A",
+                            "useBackend": false
+                        }
+                    ],
+                    "title": "Mean processing time (by route)",
+                    "type": "stat"
+                },
+                {
+                    "datasource": "${DS_PROMETHEUS}",
+                    "description": "Evolution of the average amount of time taken to process messages within the Camel integration by route",
+                    "fieldConfig": {
+                        "defaults": {
+                            "color": {
+                                "mode": "palette-classic"
+                            },
+                            "custom": {
+                                "axisBorderShow": false,
+                                "axisCenteredZero": false,
+                                "axisColorMode": "text",
+                                "axisLabel": "",
+                                "axisPlacement": "auto",
+                                "barAlignment": 0,
+                                "drawStyle": "line",
+                                "fillOpacity": 0,
+                                "gradientMode": "none",
+                                "hideFrom": {
+                                    "legend": false,
+                                    "tooltip": false,
+                                    "viz": false
+                                },
+                                "insertNulls": false,
+                                "lineInterpolation": "linear",
+                                "lineWidth": 1,
+                                "pointSize": 5,
+                                "scaleDistribution": {
+                                    "type": "linear"
+                                },
+                                "showPoints": "auto",
+                                "spanNulls": false,
+                                "stacking": {
+                                    "group": "A",
+                                    "mode": "none"
+                                },
+                                "thresholdsStyle": {
+                                    "mode": "area"
+                                }
+                            },
+                            "fieldMinMax": false,
+                            "mappings": [
+                                {
+                                    "options": {
+                                        "match": "null+nan",
+                                        "result": {
+                                            "color": "text",
+                                            "index": 0,
+                                            "text": "N/A"
+                                        }
+                                    },
+                                    "type": "special"
+                                }
+                            ],
+                            "min": 0,
+                            "thresholds": {
+                                "mode": "absolute",
+                                "steps": [
+                                    {
+                                        "color": "green",
+                                        "value": null
+                                    },
+                                    {
+                                        "color": "#EAB839",
+                                        "value": 0.5
+                                    },
+                                    {
+                                        "color": "red",
+                                        "value": 1
+                                    }
+                                ]
+                            },
+                            "unit": "s"
+                        },
+                        "overrides": []
+                    },
+                    "gridPos": {
+                        "h": 6,
+                        "w": 7,
+                        "x": 17,
+                        "y": 27
+                    },
+                    "id": 86,
+                    "options": {
+                        "legend": {
+                            "calcs": [],
+                            "displayMode": "list",
+                            "placement": "bottom",
+                            "showLegend": true
+                        },
+                        "tooltip": {
+                            "mode": "multi",
+                            "sort": "none"
+                        }
+                    },
+                    "pluginVersion": "10.4.3",
+                    "targets": [
+                        {
+                            "datasource": "Prometheus",
+                            "disableTextWrap": false,
+                            "editorMode": "code",
+                            "expr": "sum(camel_message_history_seconds_sum{job=\"$job\", pod=\"$pod\"}) by (routeId) / sum(camel_message_history_seconds_count{job=\"$job\", pod=\"$pod\"}) by (routeId)",
+                            "format": "time_series",
+                            "fullMetaSearch": false,
+                            "includeNullMetadata": true,
+                            "intervalFactor": 1,
+                            "legendFormat": "{{routeId}}",
+                            "range": true,
+                            "refId": "A",
+                            "useBackend": false
+                        }
+                    ],
+                    "title": "Mean processing time evolution (by route)",
+                    "type": "timeseries"
+                },
+                {
+                    "datasource": "${DS_PROMETHEUS}",
+                    "description": "Calculates the average rate of all Camel Exchanges (completed and failed) per second over a period of 1 minute",
+                    "fieldConfig": {
+                        "defaults": {
+                            "color": {
+                                "mode": "palette-classic"
+                            },
+                            "custom": {
+                                "axisBorderShow": false,
+                                "axisCenteredZero": false,
+                                "axisColorMode": "text",
+                                "axisLabel": "",
+                                "axisPlacement": "auto",
+                                "barAlignment": 0,
+                                "drawStyle": "line",
+                                "fillOpacity": 10,
+                                "gradientMode": "none",
+                                "hideFrom": {
+                                    "legend": false,
+                                    "tooltip": false,
+                                    "viz": false
+                                },
+                                "insertNulls": false,
+                                "lineInterpolation": "linear",
+                                "lineWidth": 1,
+                                "pointSize": 5,
+                                "scaleDistribution": {
+                                    "type": "linear"
+                                },
+                                "showPoints": "never",
+                                "spanNulls": false,
+                                "stacking": {
+                                    "group": "A",
+                                    "mode": "none"
+                                },
+                                "thresholdsStyle": {
+                                    "mode": "off"
+                                }
+                            },
+                            "mappings": [],
+                            "min": 0,
+                            "thresholds": {
+                                "mode": "absolute",
+                                "steps": [
+                                    {
+                                        "color": "green",
+                                        "value": null
+                                    },
+                                    {
+                                        "color": "red",
+                                        "value": 80
+                                    }
+                                ]
+                            },
+                            "unit": "mps"
+                        },
+                        "overrides": []
+                    },
+                    "gridPos": {
+                        "h": 7,
+                        "w": 6,
+                        "x": 0,
+                        "y": 33
+                    },
+                    "id": 14,
+                    "options": {
+                        "legend": {
+                            "calcs": [],
+                            "displayMode": "list",
+                            "placement": "bottom",
+                            "showLegend": true
+                        },
+                        "tooltip": {
+                            "mode": "multi",
+                            "sort": "none"
+                        }
+                    },
+                    "pluginVersion": "10.4.3",
+                    "targets": [
+                        {
+                            "datasource": "Prometheus",
+                            "disableTextWrap": false,
+                            "editorMode": "code",
+                            "expr": "sum(rate(camel_exchanges_total{job=\"$job\", pod=\"$pod\"}[1m])) by (routeId)",
+                            "fullMetaSearch": false,
+                            "hide": false,
+                            "includeNullMetadata": true,
+                            "instant": false,
+                            "legendFormat": "{{routeId}}",
+                            "range": true,
+                            "refId": "A",
+                            "useBackend": false
+                        }
+                    ],
+                    "title": "Exchanges per second (by route)",
+                    "type": "timeseries"
+                },
+                {
+                    "datasource": "${DS_PROMETHEUS}",
+                    "description": "Calculates the average rate of external redeliveries (initiated by an external client, e.g. a JMS broker) per second over a period of 1 minute",
+                    "fieldConfig": {
+                        "defaults": {
+                            "color": {
+                                "mode": "palette-classic"
+                            },
+                            "custom": {
+                                "axisBorderShow": false,
+                                "axisCenteredZero": false,
+                                "axisColorMode": "text",
+                                "axisLabel": "",
+                                "axisPlacement": "auto",
+                                "barAlignment": 0,
+                                "drawStyle": "line",
+                                "fillOpacity": 10,
+                                "gradientMode": "none",
+                                "hideFrom": {
+                                    "legend": false,
+                                    "tooltip": false,
+                                    "viz": false
+                                },
+                                "insertNulls": false,
+                                "lineInterpolation": "linear",
+                                "lineWidth": 1,
+                                "pointSize": 5,
+                                "scaleDistribution": {
+                                    "type": "linear"
+                                },
+                                "showPoints": "never",
+                                "spanNulls": false,
+                                "stacking": {
+                                    "group": "A",
+                                    "mode": "none"
+                                },
+                                "thresholdsStyle": {
+                                    "mode": "off"
+                                }
+                            },
+                            "mappings": [],
+                            "min": 0,
+                            "thresholds": {
+                                "mode": "absolute",
+                                "steps": [
+                                    {
+                                        "color": "green",
+                                        "value": null
+                                    },
+                                    {
+                                        "color": "red",
+                                        "value": 80
+                                    }
+                                ]
+                            },
+                            "unit": "mps"
+                        },
+                        "overrides": []
+                    },
+                    "gridPos": {
+                        "h": 7,
+                        "w": 6,
+                        "x": 6,
+                        "y": 33
+                    },
+                    "id": 88,
+                    "options": {
+                        "legend": {
+                            "calcs": [],
+                            "displayMode": "list",
+                            "placement": "bottom",
+                            "showLegend": true
+                        },
+                        "tooltip": {
+                            "mode": "multi",
+                            "sort": "none"
+                        }
+                    },
+                    "pluginVersion": "10.4.3",
+                    "targets": [
+                        {
+                            "datasource": "Prometheus",
+                            "disableTextWrap": false,
+                            "editorMode": "code",
+                            "expr": "sum(rate(camel_exchanges_external_redeliveries_total{job=\"$job\", pod=\"$pod\"}[1m])) by (routeId)",
+                            "fullMetaSearch": false,
+                            "hide": false,
+                            "includeNullMetadata": true,
+                            "instant": false,
+                            "legendFormat": "{{routeId}}",
+                            "range": true,
+                            "refId": "A",
+                            "useBackend": false
+                        }
+                    ],
+                    "title": "External Redeliveries per second (by route)",
+                    "type": "timeseries"
+                },
+                {
+                    "datasource": "${DS_PROMETHEUS}",
+                    "description": "Maximum amount of time taken to process messages within the Camel integration",
+                    "fieldConfig": {
+                        "defaults": {
+                            "color": {
+                                "mode": "thresholds"
+                            },
+                            "mappings": [
+                                {
+                                    "options": {
+                                        "match": "null+nan",
+                                        "result": {
+                                            "color": "text",
+                                            "index": 0,
+                                            "text": "N/A"
+                                        }
+                                    },
+                                    "type": "special"
+                                }
+                            ],
+                            "min": 0,
+                            "thresholds": {
+                                "mode": "absolute",
+                                "steps": [
+                                    {
+                                        "color": "green",
+                                        "value": null
+                                    },
+                                    {
+                                        "color": "#EAB839",
+                                        "value": 1
+                                    },
+                                    {
+                                        "color": "red",
+                                        "value": 2
+                                    }
+                                ]
+                            },
+                            "unit": "s"
+                        },
+                        "overrides": []
+                    },
+                    "gridPos": {
+                        "h": 7,
+                        "w": 5,
+                        "x": 12,
+                        "y": 33
+                    },
+                    "id": 85,
+                    "options": {
+                        "colorMode": "value",
+                        "graphMode": "none",
+                        "justifyMode": "auto",
+                        "orientation": "horizontal",
+                        "reduceOptions": {
+                            "calcs": [
+                                "last"
+                            ],
+                            "fields": "",
+                            "values": false
+                        },
+                        "showPercentChange": false,
+                        "textMode": "value_and_name",
+                        "wideLayout": true
+                    },
+                    "pluginVersion": "10.4.3",
+                    "targets": [
+                        {
+                            "datasource": "Prometheus",
+                            "disableTextWrap": false,
+                            "editorMode": "code",
+                            "expr": "max(camel_message_history_seconds_max{job=\"$job\", pod=\"$pod\"}) by (routeId)",
+                            "format": "time_series",
+                            "fullMetaSearch": false,
+                            "includeNullMetadata": true,
+                            "intervalFactor": 1,
+                            "legendFormat": "{{routeId}}:",
+                            "range": true,
+                            "refId": "E",
+                            "useBackend": false
+                        }
+                    ],
+                    "title": "Max processing time (by route)",
+                    "type": "stat"
+                },
+                {
+                    "datasource": "Prometheus",
+                    "description": "Evolution of the maximum amount of time taken to process messages within the Camel integration",
+                    "fieldConfig": {
+                        "defaults": {
+                            "color": {
+                                "mode": "palette-classic"
+                            },
+                            "custom": {
+                                "axisBorderShow": false,
+                                "axisCenteredZero": false,
+                                "axisColorMode": "text",
+                                "axisLabel": "",
+                                "axisPlacement": "auto",
+                                "barAlignment": 0,
+                                "drawStyle": "line",
+                                "fillOpacity": 0,
+                                "gradientMode": "none",
+                                "hideFrom": {
+                                    "legend": false,
+                                    "tooltip": false,
+                                    "viz": false
+                                },
+                                "insertNulls": false,
+                                "lineInterpolation": "linear",
+                                "lineWidth": 1,
+                                "pointSize": 5,
+                                "scaleDistribution": {
+                                    "type": "linear"
+                                },
+                                "showPoints": "auto",
+                                "spanNulls": false,
+                                "stacking": {
+                                    "group": "A",
+                                    "mode": "none"
+                                },
+                                "thresholdsStyle": {
+                                    "mode": "area"
+                                }
+                            },
+                            "mappings": [
+                                {
+                                    "options": {
+                                        "match": "null+nan",
+                                        "result": {
+                                            "color": "text",
+                                            "index": 0,
+                                            "text": "N/A"
+                                        }
+                                    },
+                                    "type": "special"
+                                }
+                            ],
+                            "min": 0,
+                            "thresholds": {
+                                "mode": "absolute",
+                                "steps": [
+                                    {
+                                        "color": "green",
+                                        "value": null
+                                    },
+                                    {
+                                        "color": "#EAB839",
+                                        "value": 1
+                                    },
+                                    {
+                                        "color": "red",
+                                        "value": 2
+                                    }
+                                ]
+                            },
+                            "unit": "s"
+                        },
+                        "overrides": []
+                    },
+                    "gridPos": {
+                        "h": 7,
+                        "w": 7,
+                        "x": 17,
+                        "y": 33
+                    },
+                    "id": 15,
+                    "options": {
+                        "legend": {
+                            "calcs": [],
+                            "displayMode": "list",
+                            "placement": "bottom",
+                            "showLegend": true
+                        },
+                        "tooltip": {
+                            "mode": "multi",
+                            "sort": "none"
+                        }
+                    },
+                    "pluginVersion": "10.4.3",
+                    "targets": [
+                        {
+                            "datasource": "Prometheus",
+                            "disableTextWrap": false,
+                            "editorMode": "code",
+                            "expr": "max(camel_message_history_seconds_max{job=\"$job\", pod=\"$pod\"}) by (routeId)",
+                            "format": "time_series",
+                            "fullMetaSearch": false,
+                            "includeNullMetadata": true,
+                            "intervalFactor": 1,
+                            "legendFormat": "{{routeId}}",
+                            "range": true,
+                            "refId": "E",
+                            "useBackend": false
+                        }
+                    ],
+                    "title": "Max processing time evolution (by route)",
+                    "type": "timeseries"
+                },
+                {
+                    "datasource": "${DS_PROMETHEUS}",
+                    "description": "Calculates the average rate of Camel Failures per second over a period of 1 minute",
+                    "fieldConfig": {
+                        "defaults": {
+                            "color": {
+                                "mode": "palette-classic"
+                            },
+                            "custom": {
+                                "axisBorderShow": false,
+                                "axisCenteredZero": false,
+                                "axisColorMode": "text",
+                                "axisLabel": "",
+                                "axisPlacement": "auto",
+                                "barAlignment": 0,
+                                "drawStyle": "line",
+                                "fillOpacity": 10,
+                                "gradientMode": "none",
+                                "hideFrom": {
+                                    "legend": false,
+                                    "tooltip": false,
+                                    "viz": false
+                                },
+                                "insertNulls": false,
+                                "lineInterpolation": "linear",
+                                "lineWidth": 1,
+                                "pointSize": 5,
+                                "scaleDistribution": {
+                                    "type": "linear"
+                                },
+                                "showPoints": "never",
+                                "spanNulls": false,
+                                "stacking": {
+                                    "group": "A",
+                                    "mode": "none"
+                                },
+                                "thresholdsStyle": {
+                                    "mode": "off"
+                                }
+                            },
+                            "mappings": [],
+                            "min": 0,
+                            "thresholds": {
+                                "mode": "absolute",
+                                "steps": [
+                                    {
+                                        "color": "green",
+                                        "value": null
+                                    },
+                                    {
+                                        "color": "red",
+                                        "value": 80
+                                    }
+                                ]
+                            },
+                            "unit": "mps"
+                        },
+                        "overrides": []
+                    },
+                    "gridPos": {
+                        "h": 7,
+                        "w": 6,
+                        "x": 0,
+                        "y": 40
+                    },
+                    "id": 87,
+                    "options": {
+                        "legend": {
+                            "calcs": [],
+                            "displayMode": "list",
+                            "placement": "bottom",
+                            "showLegend": true
+                        },
+                        "tooltip": {
+                            "mode": "multi",
+                            "sort": "none"
+                        }
+                    },
+                    "pluginVersion": "10.4.3",
+                    "targets": [
+                        {
+                            "datasource": "Prometheus",
+                            "disableTextWrap": false,
+                            "editorMode": "code",
+                            "expr": "sum(rate(camel_exchanges_failed_total{job=\"$job\", pod=\"$pod\"}[1m])) by (routeId)",
+                            "fullMetaSearch": false,
+                            "hide": false,
+                            "includeNullMetadata": true,
+                            "instant": false,
+                            "legendFormat": "{{routeId}}",
+                            "range": true,
+                            "refId": "A",
+                            "useBackend": false
+                        }
+                    ],
+                    "title": "Camel Failures per second (by route)",
+                    "type": "timeseries"
+                },
+                {
+                    "datasource": "${DS_PROMETHEUS}",
+                    "description": "Calculates the average rate of Camel Exchanges failures handled per second over a period of 1 minute",
+                    "fieldConfig": {
+                        "defaults": {
+                            "color": {
+                                "mode": "palette-classic"
+                            },
+                            "custom": {
+                                "axisBorderShow": false,
+                                "axisCenteredZero": false,
+                                "axisColorMode": "text",
+                                "axisLabel": "",
+                                "axisPlacement": "auto",
+                                "barAlignment": 0,
+                                "drawStyle": "line",
+                                "fillOpacity": 10,
+                                "gradientMode": "none",
+                                "hideFrom": {
+                                    "legend": false,
+                                    "tooltip": false,
+                                    "viz": false
+                                },
+                                "insertNulls": false,
+                                "lineInterpolation": "linear",
+                                "lineWidth": 1,
+                                "pointSize": 5,
+                                "scaleDistribution": {
+                                    "type": "linear"
+                                },
+                                "showPoints": "never",
+                                "spanNulls": false,
+                                "stacking": {
+                                    "group": "A",
+                                    "mode": "none"
+                                },
+                                "thresholdsStyle": {
+                                    "mode": "off"
+                                }
+                            },
+                            "mappings": [],
+                            "min": 0,
+                            "thresholds": {
+                                "mode": "absolute",
+                                "steps": [
+                                    {
+                                        "color": "green",
+                                        "value": null
+                                    },
+                                    {
+                                        "color": "red",
+                                        "value": 80
+                                    }
+                                ]
+                            },
+                            "unit": "mps"
+                        },
+                        "overrides": []
+                    },
+                    "gridPos": {
+                        "h": 7,
+                        "w": 6,
+                        "x": 6,
+                        "y": 40
+                    },
+                    "id": 89,
+                    "options": {
+                        "legend": {
+                            "calcs": [],
+                            "displayMode": "list",
+                            "placement": "bottom",
+                            "showLegend": true
+                        },
+                        "tooltip": {
+                            "mode": "multi",
+                            "sort": "none"
+                        }
+                    },
+                    "pluginVersion": "10.4.3",
+                    "targets": [
+                        {
+                            "datasource": "Prometheus",
+                            "disableTextWrap": false,
+                            "editorMode": "code",
+                            "expr": "sum(rate(camel_exchanges_failures_handled_total{job=\"$job\", pod=\"$pod\"}[1m])) by (routeId)",
+                            "fullMetaSearch": false,
+                            "hide": false,
+                            "includeNullMetadata": true,
+                            "instant": false,
+                            "legendFormat": "{{routeId}}",
+                            "range": true,
+                            "refId": "A",
+                            "useBackend": false
+                        }
+                    ],
+                    "title": "Failures handled per second (by route)",
+                    "type": "timeseries"
+                }
+            ],
+            "refresh": "5s",
+            "schemaVersion": 39,
+            "tags": [
+                "2.0",
+                "Micrometer Metrics"
+            ],
+            "templating": {
+                "list": [
+                    {
+                        "current": {},
+                        "datasource": "${DS_PROMETHEUS}",
+                        "definition": "label_values(camel_exchanges_total,namespace)",
+                        "hide": 0,
+                        "includeAll": false,
+                        "multi": false,
+                        "name": "namespace",
+                        "options": [],
+                        "query": {
+                            "qryType": 1,
+                            "query": "label_values(camel_exchanges_total,namespace)",
+                            "refId": "PrometheusVariableQueryEditor-VariableQuery"
+                        },
+                        "refresh": 1,
+                        "regex": "",
+                        "skipUrlSync": false,
+                        "sort": 0,
+                        "type": "query"
+                    },
+                    {
+                        "current": {},
+                        "datasource": "${DS_PROMETHEUS}",
+                        "definition": "label_values(camel_exchanges_total{namespace=\"$namespace\"},job)",
+                        "hide": 0,
+                        "includeAll": false,
+                        "label": "camel integration",
+                        "multi": false,
+                        "name": "job",
+                        "options": [],
+                        "query": {
+                            "qryType": 1,
+                            "query": "label_values(camel_exchanges_total{namespace=\"$namespace\"},job)",
+                            "refId": "PrometheusVariableQueryEditor-VariableQuery"
+                        },
+                        "refresh": 1,
+                        "regex": "",
+                        "skipUrlSync": false,
+                        "sort": 0,
+                        "type": "query"
+                    },
+                    {
+                        "current": {},
+                        "datasource": "${DS_PROMETHEUS}",
+                        "definition": "label_values(camel_exchanges_total{namespace=\"$namespace\", job=\"$job\"},pod)",
+                        "hide": 0,
+                        "includeAll": false,
+                        "label": "",
+                        "multi": false,
+                        "name": "pod",
+                        "options": [],
+                        "query": {
+                            "qryType": 1,
+                            "query": "label_values(camel_exchanges_total{namespace=\"$namespace\", job=\"$job\"},pod)",
+                            "refId": "PrometheusVariableQueryEditor-VariableQuery"
+                        },
+                        "refresh": 1,
+                        "regex": "",
+                        "skipUrlSync": false,
+                        "sort": 0,
+                        "tagValuesQuery": "",
+                        "tagsQuery": "",
+                        "type": "query",
+                        "useTags": false
+                    }
+                ]
+            },
+            "time": {
+                "from": "now-30m",
+                "to": "now"
+            },
+            "timepicker": {
+                "refresh_intervals": [
+                    "5s",
+                    "10s",
+                    "30s",
+                    "1m",
+                    "5m",
+                    "15m",
+                    "30m",
+                    "1h",
+                    "2h",
+                    "1d"
+                ],
+                "time_options": [
+                    "5m",
+                    "15m",
+                    "1h",
+                    "6h",
+                    "12h",
+                    "24h",
+                    "2d",
+                    "7d",
+                    "30d"
+                ]
+            },
+            "timezone": "",
+            "title": "Camel Integration Micrometer Metrics",
+            "uid": "BTJLuXoqv",
+            "version": 1,
+            "weekStart": ""
+        }
