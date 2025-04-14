@@ -1,0 +1,48 @@
+
+
+- route:
+    id: flight-search-route
+    from:
+      id: from-3851
+      uri: platform-http
+      parameters:
+        path: /flight
+      steps:
+        - log:
+            id: log-3786
+            message: "Flight Information Service: Received request for flights ${body}"
+        - unmarshal:
+            id: unmarshal-1358
+            json: {}
+        - setBody:
+            id: setBody-9298
+            expression:
+              simple:
+                expression: >-
+                  select * from flights where source_city =
+                  '${body[source_city]}'
+                                    and destination_city = '${body[destination_city]}'
+        - log:
+            id: log-3732
+            message: body=${body}
+        - to:
+            id: to-3793
+            uri: jdbc
+            parameters:
+              dataSourceName: camel
+        - marshal:
+            id: marshal-2430
+            json: {}
+        - setHeader:
+            id: setHeader-2294
+            expression:
+              constant:
+                expression: application/json
+            name: Content-Type
+- routeConfiguration:
+
+    intercept:
+      - intercept:
+          steps:
+            - process:
+                ref: messageProcessor
