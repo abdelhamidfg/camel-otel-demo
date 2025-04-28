@@ -1,0 +1,28 @@
+schemaVersion: 2.2.2
+metadata:
+  name: openshift-devspaces-extended-udi
+components:
+  - name: tools
+    container:
+      image: quay.io/asoliman/devspaces-extended-udi:3.20
+      memoryRequest: 2Gi
+      memoryLimit: 6Gi
+      cpuLimit: 4000m
+      cpuRequest: 1000m
+commands:
+  - id: install-camel-cli
+    exec:
+      label: "Install Apache Camel JBang"
+      component: tools
+      workingDir: ${PROJECT_SOURCE}
+      commandLine: "jbang trust add -o https://github.com/apache && jbang app install --verbose --name=camel /home/user/CamelJBang.java"
+  - id: install-camel-k8s-plugin
+    exec:
+      label: "Install Camel Kubernetes Plugin"
+      component: tools
+      workingDir: ${PROJECT_SOURCE}
+      commandLine: "source ~/.bashrc && camel plugin add kubernetes"
+events:
+  postStart:
+    - install-camel-cli
+    - install-camel-k8s-plugin
